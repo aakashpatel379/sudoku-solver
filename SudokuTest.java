@@ -11,7 +11,14 @@ public class SudokuTest {
 
 		System.out.println("Enter size of grid: ");
 		Scanner in= new Scanner(System.in);
-		int size = in.nextInt();
+		int size=0;
+		try {
+			size = in.nextInt();
+		}
+		catch (Exception e) {
+			System.out.println("Invalid input!");
+			System.exit(0);
+		}
 		if(size<4)
 		{
 			System.out.println("Minimum soduku grid size must be of 2x2!");
@@ -34,57 +41,62 @@ public class SudokuTest {
 			System.exit(0);
 		}
 		
-		SortedSet<Character> valueSet= new TreeSet<Character>();											//Variable to handle possible values set
-		for (int pos = 0; pos < valueString.length(); pos++) {
-			char ch= valueString.charAt(pos);
-			if(!valueSet.contains(ch))
-				valueSet.add(ch);
-			else																						  	//To check all possible values are unique
+		try {
+			SortedSet<Character> valueSet= new TreeSet<Character>();											//Variable to handle possible values set
+			for (int pos = 0; pos < valueString.length(); pos++) {
+				char ch= valueString.charAt(pos);
+				if(!valueSet.contains(ch))
+					valueSet.add(ch);
+				else																						  	//To check all possible values are unique
+				{
+					System.out.println("Repetition of possible values!");
+					System.exit(0);
+				}
+				
+			}
+			in.nextLine();
+			System.out.println("Enter matrix line by line (or multiline): ");
+			Character[][] matrix= new Character[size][size];
+			
+			List<String> tokens = new ArrayList<String>();												
+			for(int pos=0; pos<size;pos++)
 			{
-				System.out.println("Repetition of possible values!");
-				System.exit(0);
+				tokens.add(in.nextLine());																	//Take matrix input row by row for size given
 			}
 			
-		}
-		in.nextLine();
-		System.out.println("Enter matrix line by line (or multiline): ");
-		Character[][] matrix= new Character[size][size];
-		
-		List<String> tokens = new ArrayList<String>();												
-		for(int pos=0; pos<size;pos++)
-		{
-			tokens.add(in.nextLine());																	//Take matrix input row by row for size given
-		}
-		
-		if(tokens.size() < size)																		
-		{
-			System.out.println("Insufficient input provided! ");
-		}
-			
-		for (int i = 0; i < size; i++)
-        {
-			String line= tokens.get(i);
-			if(line.length()<size)
+			if(tokens.size() < size)																		
 			{
-				System.out.println("Insufficient characters in row "+ (i+1)+" of matrix!");
-				System.exit(0);
+				System.out.println("\nInsufficient input provided! ");
 			}
-            for (int j = 0; j < size; j++)
-            {
-                if(!valueSet.contains(line.charAt(j)) && line.charAt(j)!='.')
-                {
-                	System.out.println("Matrix input out of the provided possible value set!");
-                	System.exit(0);
-                }
-            	matrix[i][j] = line.charAt(j);
-            }
-        }
-		in.close();
-		Sudoku s=new Sudoku(matrix, valueSet);
-		LinkedList<Integer> linkedList= new LinkedList<Integer>();
-		if(s.solveSudoku(linkedList))																//calling Sudoku solver method
-		s.printSudoku();
-		else
-		System.out.println("no solution");	
+				
+			for (int i = 0; i < size; i++)
+			{
+				String line= tokens.get(i);
+				if(line.length()<size)
+				{
+					System.out.println("Insufficient characters in row "+ (i+1)+" of matrix!");
+					System.exit(0);
+				}
+			    for (int j = 0; j < size; j++)
+			    {
+			        if(!valueSet.contains(line.charAt(j)) && line.charAt(j)!='.')
+			        {
+			        	System.out.println("Matrix input out of the provided possible value set!");
+			        	System.exit(0);
+			        }
+			    	matrix[i][j] = line.charAt(j);
+			    }
+			}
+			in.close();
+			Sudoku s=new Sudoku(matrix, valueSet);
+			LinkedList<Integer> linkedList= new LinkedList<Integer>();
+			if(s.solveSudoku(linkedList))																//calling Sudoku solver method
+			s.printSudoku();
+			else
+			System.out.println("no solution");
+		} catch (Exception e) {
+			System.err.println("An error occured!");
+			e.printStackTrace();
+		}	
 	}
 }
