@@ -9,7 +9,6 @@ public class SudokuTest {
 
 	public static void main(String[] args) {
 
-		System.out.println("Enter size of grid: ");
 		Scanner in= new Scanner(System.in);
 		int size=0;
 		try {
@@ -33,7 +32,6 @@ public class SudokuTest {
 				System.exit(0);
 			}
 		}
-		System.out.println("Enter possible grid values: ");
 		String valueString = in.next();
 		if(valueString.length()!=size)
 		{
@@ -55,7 +53,6 @@ public class SudokuTest {
 				
 			}
 			in.nextLine();
-			System.out.println("Enter matrix line by line (or multiline): ");
 			Character[][] matrix= new Character[size][size];
 			
 			List<String> tokens = new ArrayList<String>();												
